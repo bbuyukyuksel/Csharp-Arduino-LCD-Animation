@@ -1,0 +1,226 @@
+/*************************************
+ The circuit:
+ * LCD RS pin to digital pin 12
+ * LCD Enable pin to digital pin 11
+ * LCD D4 pin to digital pin 5
+ * LCD D5 pin to digital pin 4
+ * LCD D6 pin to digital pin 3
+ * LCD D7 pin to digital pin 2
+ * LCD R/W pin to ground
+ * 10K resistor:
+ * ends to +5V and ground
+ * wiper to LCD VO pin (pin 3)
+****************************************/
+
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+#define LCD_LIGHT_PIN 6
+volatile int ANI_LCD_BLINK = 0; //Default is 0 because LCD_BLINK animation is closed. 
+volatile int LCD_CLEAR = 0;
+volatile char cmd;
+volatile int state = -1;
+String yazi = "EloHab";
+volatile int delay_lcd = 300;
+volatile int delay_ani = 300;
+volatile int SCROLL_LEFT = 0,SCROLL_RIGHT = 0,SCROLL_STOP = 0;
+volatile int pos_x = 0,pos_y = 0;
+volatile int ANI_1 = 0,ANI_2 = 0;
+volatile int counter4Shift = 0;
+volatile int counter4scroll_left = 0;
+volatile int counter4scroll_right= 0;
+
+void setup() {
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  //lcd.cursor();
+  pinMode(LCD_LIGHT_PIN,OUTPUT);
+  lcd.print(yazi);
+}
+void loop() {
+  if(Serial.available()){
+    switch(Serial.read()){
+      case '0' : state = 0; break; //Set Yazi ++
+      case '1' : state = 1; break; //Set delay_lcd ++
+      case '2' : state = 2; break; //Set delay_ani ++
+      case 'c' : LCD_CLEAR = 1; break; //LCD clear ++
+      case 'q' : ANI_LCD_BLINK = 1; break; //Active ++
+      case 'w' : ANI_LCD_BLINK = 0; break; //Passive
+      case 'a' : SCROLL_LEFT  = 1; SCROLL_RIGHT  = 0; counter4scroll_left = 0; break;//ScrollRight
+      case 'd' : SCROLL_RIGHT = 1; SCROLL_LEFT  = 0;  counter4scroll_right = 0;break; //ScrollRight
+      case 's' : SCROLL_STOP = 1; SCROLL_RIGHT = 0; SCROLL_LEFT  = 0; counter4scroll_left = 0; counter4scroll_right = 0; break;
+      case 'h' : ANI_1 = 1; break;
+      case 'H' : ANI_1 = 0; lcd.clear(); lcd.setCursor(0,0); lcd.print(yazi); break;
+      case 'j' : ANI_2 = 1; break;
+      case 'J' : ANI_2 = 0; lcd.clear(); lcd.setCursor(0,0); lcd.print(yazi); break;
+    }
+    delay(1000);
+    
+    Serial.println("String : " + yazi);
+    Serial.println("Animation 1 : " + String(ANI_1));
+    Serial.println("Animation 2 : " + String(ANI_2));
+    Serial.println("LCD Blink : " + String(ANI_LCD_BLINK));
+    Serial.println("Scroll Left : " + String(SCROLL_LEFT));
+    Serial.println("Scroll Right: " + String(SCROLL_RIGHT));
+    Serial.println("Scroll Stop : " + String(SCROLL_STOP));
+    Serial.println("*******************************");
+    
+    
+    
+    if(state == 0){
+      yazi = SerialReadString();
+      lcd.clear();
+      lcd.print(yazi);
+      Serial.println("State 0 : " + yazi); 
+      state = -1;
+    }
+    else if(state == 1){
+      String temp = SerialReadString();
+      delay_lcd = temp.toInt();
+      Serial.println("Delay LCD : " + String(delay_lcd));
+      state = -1;
+    }
+    else if(state == 2){
+      String temp = SerialReadString();
+      delay_ani = temp.toInt();
+      Serial.println("Delay Animation : " + String(delay_ani));
+      state = -1;
+    }
+  }
+  /*********************************************************/
+  if(ANI_LCD_BLINK){
+    lcd_blink(delay_lcd);  
+  }
+  else{
+    digitalWrite(LCD_LIGHT_PIN, LOW);
+  }
+  if(LCD_CLEAR){
+    lcd.clear();
+    LCD_CLEAR = 0;
+  }
+  if(SCROLL_LEFT){
+    if(counter4scroll_left == 0 || counter4scroll_left > 16 + yazi.length()){
+      lcd.clear();
+      lcd.setCursor(16,0);
+      lcd.print(yazi);
+      counter4scroll_left = 0;
+    }
+    counter4scroll_left++;
+    lcd.scrollDisplayLeft();
+    delay(delay_ani);
+  }
+  if(SCROLL_RIGHT){
+    if(counter4scroll_right == 0 || counter4scroll_right > 16 + yazi.length()){
+      lcd.clear();
+      int SIZE = yazi.length();
+      String text = "";
+      while(SIZE--){
+        text = yazi[SIZE] + text;
+        lcd.setCursor(0,0);
+        lcd.print(text);
+        delay(delay_ani);
+        //Serial.println(text);
+      }
+      counter4scroll_right = 0;
+    }
+
+    counter4scroll_right++;
+    lcd.scrollDisplayRight(); 
+    delay(delay_ani); 
+  }
+  if(ANI_1){
+    ani_1(delay_ani); 
+  }
+  if(ANI_2){
+    ani_2(delay_ani); 
+  }
+  
+  
+
+  /*******END*******/
+}  
+
+
+void lcd_blink(volatile int timeofLCD){
+  digitalWrite(LCD_LIGHT_PIN,LOW);
+  delay(timeofLCD);
+  digitalWrite(LCD_LIGHT_PIN,HIGH);
+  delay(timeofLCD);  
+}
+
+String SerialReadString(){
+    String temp = "";
+    if(Serial.available()){
+      while(Serial.available() > 0){
+        temp += char(Serial.read());
+      }
+    }
+    return temp;
+}
+
+void ani_1(int timeOfAni) {
+  int X = yazi.length();
+  //Serial.println("X : " + String(pos_x) + "\t" + "Y : " + String(pos_y));
+  if(pos_x == 16 - X && pos_y == 0){
+    pos_y ++; pos_x = 0;
+  }
+  else if(pos_x == 16 - X && pos_y == 1){
+    pos_y --; pos_x = 0;
+  }
+  lcd.clear();
+  if(pos_y == 0){
+    lcd.setCursor(pos_x,pos_y); 
+    lcd.leftToRight(); 
+    lcd.scrollDisplayRight();
+    pos_x++;
+  }
+  else if(pos_y == 1){
+    lcd.setCursor(16- X - pos_x,pos_y);
+    Serial.println("X : " + String(16- X - pos_x) + "\t" + "Y : " + String(pos_y));
+    lcd.leftToRight();
+    lcd.scrollDisplayLeft();
+    pos_x++;
+  }
+  lcd.print(yazi);
+  delay(timeOfAni);
+}
+void ani_2(int timeOfAni){
+  lcd.clear();
+  int len = yazi.length();
+  int iter = 0;
+  pos_x = 0; pos_y = 0;
+  while(len--){
+    if(counter4Shift == 0)
+      pos_x ++;
+    else if(counter4Shift == 1){
+      pos_x += 2;
+    }
+    lcd.setCursor(pos_x,pos_y);
+    lcd.print(yazi[iter++]);
+    if(iter%2 == 1)
+      pos_y = 1;
+    else
+      pos_y = 0;
+    Serial.println("Pos X : " + String(pos_x));
+    delay(delay_ani);
+  }
+  if(counter4Shift == 1)
+    counter4Shift = -1;
+  counter4Shift ++;
+  iter = 10;
+  Serial.println("Buradayim..!!1");
+  while(iter--)
+    lcd_blink(delay_lcd);
+  digitalWrite(LCD_LIGHT_PIN,LOW);
+  
+  lcd.clear();
+  
+  lcd.setCursor(0,0);
+  lcd.print(yazi);
+  iter = 19;
+  Serial.println("Buradayim..!!2" + String(iter));
+  while(iter--){
+    delay(delay_ani);
+    lcd.scrollDisplayRight();  
+  }
+  Serial.println("Buradayim..!!3");
+}

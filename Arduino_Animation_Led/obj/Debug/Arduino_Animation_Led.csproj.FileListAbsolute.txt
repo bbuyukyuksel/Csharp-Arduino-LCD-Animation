@@ -1,0 +1,18 @@
+c:\users\buyukyuksel\documents\visual studio 2015\Projects\Arduino_Animation_Led\Arduino_Animation_Led\bin\Debug\Arduino_Animation_Led.exe.config
+c:\users\buyukyuksel\documents\visual studio 2015\Projects\Arduino_Animation_Led\Arduino_Animation_Led\bin\Debug\Arduino_Animation_Led.exe
+c:\users\buyukyuksel\documents\visual studio 2015\Projects\Arduino_Animation_Led\Arduino_Animation_Led\bin\Debug\Arduino_Animation_Led.pdb
+c:\users\buyukyuksel\documents\visual studio 2015\Projects\Arduino_Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.csprojResolveAssemblyReference.cache
+c:\users\buyukyuksel\documents\visual studio 2015\Projects\Arduino_Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.Form1.resources
+c:\users\buyukyuksel\documents\visual studio 2015\Projects\Arduino_Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.Properties.Resources.resources
+c:\users\buyukyuksel\documents\visual studio 2015\Projects\Arduino_Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.csproj.GenerateResource.Cache
+c:\users\buyukyuksel\documents\visual studio 2015\Projects\Arduino_Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.exe
+c:\users\buyukyuksel\documents\visual studio 2015\Projects\Arduino_Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.pdb
+C:\Users\buyukyuksel\Desktop\Basit Projeler\C# - Arduino Animation_Led\Arduino_Animation_Led\bin\Debug\Arduino_Animation_Led.exe.config
+C:\Users\buyukyuksel\Desktop\Basit Projeler\C# - Arduino Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.exe
+C:\Users\buyukyuksel\Desktop\Basit Projeler\C# - Arduino Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.pdb
+C:\Users\buyukyuksel\Desktop\Basit Projeler\C# - Arduino Animation_Led\Arduino_Animation_Led\bin\Debug\Arduino_Animation_Led.exe
+C:\Users\buyukyuksel\Desktop\Basit Projeler\C# - Arduino Animation_Led\Arduino_Animation_Led\bin\Debug\Arduino_Animation_Led.pdb
+C:\Users\buyukyuksel\Desktop\Basit Projeler\C# - Arduino Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.csprojResolveAssemblyReference.cache
+C:\Users\buyukyuksel\Desktop\Basit Projeler\C# - Arduino Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.Form1.resources
+C:\Users\buyukyuksel\Desktop\Basit Projeler\C# - Arduino Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.Properties.Resources.resources
+C:\Users\buyukyuksel\Desktop\Basit Projeler\C# - Arduino Animation_Led\Arduino_Animation_Led\obj\Debug\Arduino_Animation_Led.csproj.GenerateResource.Cache
